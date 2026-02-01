@@ -1,0 +1,378 @@
+/* 7-segment LCD font for score display */
+@import url('https://fonts.googleapis.com/css2?family=DSEG7+Classic:wght@400&display=swap');
+
+@font-face {
+  font-family: 'DSEG7';
+  src: url('https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Regular.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.game-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 495 / 315;
+  margin: 0 auto;
+  overflow: hidden;
+  /* background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%); */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Background - torii gates scene */
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+
+/* Window character in top-left corner */
+.window-character {
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 15%;
+  z-index: 10;
+}
+
+/* Chickens on the torii gates */
+.chicken {
+  position: absolute;
+  width: 8%;
+  z-index: 5;
+}
+
+.chicken-left {
+  top: 25%;
+  left: 12%;
+}
+
+.chicken-right {
+  top: 25%;
+  right: 12%;
+  transform: scaleX(-1);
+}
+
+/* Catcher character in center-bottom */
+.catcher {
+  width: 30%;
+  height: 60%;
+  position: absolute;
+  bottom: 10%;
+  left: 40%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+/* Position adjustments for right-facing poses */
+.catcher-top-right,
+.catcher-bottom-right {
+  left: 61%;
+}
+
+/* Catcher fail poses on miss */
+.catcher-fail-left {
+  width: 45%;
+  left: 50%;
+}
+
+.catcher-fail-right {
+  width: 45%;
+  left: 51%;
+}
+
+/* Left falling egg sequence - from top-left corner descending toward catcher */
+.left-falling-egg {
+  position: absolute;
+  width: 3%;
+  z-index: 15;
+}
+
+.left-falling-egg-0 {
+  top: 34%;
+  width: 4%;
+  left: 12%;
+}
+
+.left-falling-egg-1 {
+  top: 36%;
+  left: 17%;
+}
+
+.left-falling-egg-2 {
+  top: 40%;
+  width: 3.5%;
+  left: 20%;
+}
+
+.left-falling-egg-3 {
+  top: 43%;
+  left: 24%;
+}
+
+.left-falling-egg-4 {
+  top: 48%;
+  width: 4.5%;
+  left: 27%;
+}
+
+/* Bottom-left egg sequence - continuation toward catcher's catch position */
+.bottom-left-egg {
+  position: absolute;
+  width: 3%;
+  z-index: 15;
+}
+
+.bottom-left-egg-0 {
+  top: 53%;
+  left: 11%;
+}
+
+.bottom-left-egg-1 {
+  top: 58%;
+  width: 5%;
+  left: 14%;
+}
+
+.bottom-left-egg-2 {
+  top: 61%;
+  left: 19%;
+}
+
+.bottom-left-egg-3 {
+  top: 65%;
+  width: 2.8%;
+  left: 23%;
+}
+
+.bottom-left-egg-4 {
+  top: 69%;
+  width: 4.5%;
+  left: 25%;
+}
+
+/* Right falling egg sequence - from top-right corner descending toward catcher */
+.right-falling-egg {
+  position: absolute;
+  width: 3%;
+  z-index: 15;
+}
+
+.right-falling-egg-0 {
+  top: 34%;
+  width: 4%;
+  right: 12%;
+}
+
+.right-falling-egg-1 {
+  top: 36%;
+  right: 16%;
+}
+
+.right-falling-egg-2 {
+  top: 41%;
+  width: 3.5%;
+  right: 18.5%;
+}
+
+.right-falling-egg-3 {
+  top: 44%;
+  width: 4%;
+  right: 22%;
+}
+
+.right-falling-egg-4 {
+  top: 46%;
+  right: 25%;
+}
+
+/* Bottom-right egg sequence - continuation toward catcher's catch position */
+.bottom-right-egg {
+  position: absolute;
+  width: 3%;
+  z-index: 15;
+}
+
+.bottom-right-egg-0 {
+  top: 55%;
+  width: 3.5%;
+  right: 10%;
+}
+
+.bottom-right-egg-1 {
+  top: 57%;
+  right: 14%;
+}
+
+.bottom-right-egg-2 {
+  top: 61%;
+  width: 3.5%;
+  right: 18%;
+}
+
+.bottom-right-egg-3 {
+  top: 66%;
+  width: 4%;
+  right: 21%;
+}
+
+.bottom-right-egg-4 {
+  top: 68%;
+  width: 2.8%;
+  right: 25%;
+}
+
+/* UI Overlay */
+.ui-overlay {
+  position: absolute;
+  top: 10px;
+  right: 175px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-display {
+}
+
+.score-value {
+  font-family: 'DSEG7', 'Courier New', monospace;
+  font-size: 48px;
+  font-weight: bold;
+  color: #000;
+  letter-spacing: 2px;
+}
+
+.lives-display {
+  position: absolute;
+  top: 22%;
+  right: 18%;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  z-index: 100;
+}
+
+.life-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.life-icon-blinking {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Game messages */
+.game-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 24px 48px;
+  border-radius: 12px;
+  border: 3px solid #333;
+  text-align: center;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.game-message .controls-hint {
+  font-size: 16px;
+  font-weight: normal;
+  color: #666;
+}
+
+.game-message.game-over {
+  background: rgba(255, 200, 200, 0.95);
+  border-color: #c00;
+}
+
+.game-message .final-score {
+  font-size: 20px;
+  color: #333;
+}
+
+/* Left running chicken sequence - fallen egg and running away */
+.left-running-sequence {
+  position: absolute;
+  bottom: 10%;
+  right: 68%;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 6px;
+  align-items: flex-end;
+  z-index: 15;
+}
+
+.left-running-frame {
+  width: 5%;
+  min-width: 30px;
+}
+
+.left-running-frame-0 {
+  width: 100%;
+  min-width: 100px;
+}
+
+.left-running-frame-1 {
+  width: 25%;
+  min-width: 40px;
+  position: relative;
+  bottom: 20px;
+}
+
+.left-running-frame-2 {
+  width: 15%;
+  min-width: 25px;
+}
+
+/* Right running chicken sequence - fallen egg and running away */
+.right-running-sequence {
+  position: absolute;
+  bottom: 10%;
+  left: 68%;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: flex-end;
+  z-index: 15;
+}
+
+.right-running-frame {
+  width: 5%;
+  min-width: 30px;
+}
+
+.right-running-frame-0 {
+  width: 100%;
+  min-width: 100px;
+}
+
+.right-running-frame-1 {
+  width: 25%;
+  min-width: 40px;
+  position: relative;
+  bottom: 20px;
+}
+
+.right-running-frame-2 {
+  width: 15%;
+  min-width: 25px;
+}
