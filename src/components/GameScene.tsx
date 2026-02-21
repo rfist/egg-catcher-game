@@ -14,6 +14,7 @@ import { MissAnimation } from './MissAnimation';
 import { PenaltyDisplay } from './PenaltyDisplay';
 import { ScoreDisplay } from './ScoreDisplay';
 import { GameMessage } from './GameMessage';
+import { ClickZoneOverlay } from './ClickZoneOverlay';
 
 // Assets
 import backgroundSvg from '../assets/background/scene.svg';
@@ -50,6 +51,8 @@ export function GameScene() {
       <PenaltyDisplay penaltyPoints={penaltyPoints} />
 
       <ScoreDisplay score={score} />
+
+      <ClickZoneOverlay />
 
       {showStartMessage && <GameMessage type="start" />}
 
