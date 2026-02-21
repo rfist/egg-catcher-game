@@ -11,7 +11,7 @@ export function GameMessage({ type, score }: GameMessageProps) {
     return (
       <div className="game-message">
         <span>Press SPACE or tap to start</span>
-        <span className="controls-hint">Keys: Z A S X  |  Tap quadrant to move</span>
+        <span className="controls-hint">← → ↑ ↓ to move  |  Tap to move</span>
       </div>
     );
   }

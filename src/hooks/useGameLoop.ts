@@ -111,7 +111,8 @@ export function useGameLoop() {
   useKeyboardControls({
     onPositionChange: setCatchPosition,
     onStartGame: handleStartGame,
-    enabled: !gameRunning, // Only enable start game key when not running. Movement keys handled by internal logic of useKeyboardControls
+    enabled: !gameRunning,
+    currentPosition: catchPosition,
   });
 
   // Pointer (mouse/touch) controls
