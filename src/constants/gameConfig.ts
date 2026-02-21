@@ -1,4 +1,4 @@
-import type { Nest, CatchPosition } from '../types/game';
+import type { Nest } from '../types/game';
 
 // Game timing
 export const PHASE_DURATION_MS = 1000;
@@ -17,10 +17,3 @@ export const AUDIO_POOL_SIZE = 8;
 // Nest order for iteration
 export const NEST_ORDER: Nest[] = ['bottom-left', 'top-left', 'top-right', 'bottom-right'];
 
-// Keyboard mappings
-export const KEY_MAPPINGS: Record<string, CatchPosition> = {
-  'z': 'bottom-left',
-  'a': 'top-left',
-  's': 'top-right',
-  'x': 'bottom-right',
-};

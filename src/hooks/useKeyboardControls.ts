@@ -1,33 +1,52 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { CatchPosition } from '../types/game';
-import { KEY_MAPPINGS } from '../constants/gameConfig';
 
 interface UseKeyboardControlsProps {
   onPositionChange: (position: CatchPosition) => void;
   onStartGame: () => void;
   enabled: boolean;
+  currentPosition: CatchPosition;
 }
 
 /**
  * Hook for handling keyboard input for game controls.
+ * Arrow keys: Left/Right switch side, Up/Down switch arm height.
+ * Space starts the game.
  */
 export function useKeyboardControls({
   onPositionChange,
   onStartGame,
   enabled,
+  currentPosition,
 }: UseKeyboardControlsProps) {
+  // Ref keeps the handler current without re-attaching the listener on every move
+  const positionRef = useRef(currentPosition);
+  positionRef.current = currentPosition;
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Check position keys
-      const position = KEY_MAPPINGS[e.key];
-      if (position) {
-        onPositionChange(position);
-        return;
-      }
+      const [vertical, horizontal] = positionRef.current.split('-') as ['top' | 'bottom', 'left' | 'right'];
 
-      // Space to start game
-      if (e.key === ' ' && enabled) {
-        onStartGame();
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          onPositionChange(`${vertical}-left`);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          onPositionChange(`${vertical}-right`);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          onPositionChange(`top-${horizontal}`);
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          onPositionChange(`bottom-${horizontal}`);
+          break;
+        case ' ':
+          if (enabled) onStartGame();
+          break;
       }
     };
 
