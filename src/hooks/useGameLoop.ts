@@ -11,6 +11,7 @@ import {
 import { createEmptyActiveEggs, calculateNextGameState } from '../utils/gameLogic';
 import { useAudio } from './useAudio';
 import { useKeyboardControls } from './useKeyboardControls';
+import { usePointerControls } from './usePointerControls';
 import type { CatchPosition, MissSide, ActiveEggs } from '../types/game';
 
 export function useGameLoop() {
@@ -25,6 +26,9 @@ export function useGameLoop() {
   const [missAnimationFrame, setMissAnimationFrame] = useState(0);
   const [activeEggs, setActiveEggs] = useState<ActiveEggs>(createEmptyActiveEggs);
   
+  // DOM ref for pointer controls
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   // Internal state not affecting render directly or needing persistence across renders for calculations
   const eggIdCounterRef = useRef(0);
   
@@ -87,24 +91,35 @@ export function useGameLoop() {
     }, MISS_ANIMATION_FRAME_MS);
   }, [playSound]);
 
+  // Shared start handler for keyboard and pointer controls
+  const handleStartGame = useCallback(() => {
+    if (!gameRunning) {
+      // Reset game state
+      setScore(0);
+      setPenaltyPoints(0);
+      setConsecutiveCatches(0);
+      setCatchPosition('bottom-left');
+      setActiveEggs(createEmptyActiveEggs());
+      setWindowCharacterVisible(false);
+      setMissAnimationSide(null);
+      eggIdCounterRef.current = 0;
+      setGameRunning(true);
+    }
+  }, [gameRunning]);
+
   // Keyboard controls
   useKeyboardControls({
     onPositionChange: setCatchPosition,
-    onStartGame: useCallback(() => {
-      if (!gameRunning) {
-        // Reset game state
-        setScore(0);
-        setPenaltyPoints(0);
-        setConsecutiveCatches(0);
-        setCatchPosition('bottom-left');
-        setActiveEggs(createEmptyActiveEggs());
-        setWindowCharacterVisible(false);
-        setMissAnimationSide(null);
-        eggIdCounterRef.current = 0;
-        setGameRunning(true);
-      }
-    }, [gameRunning]),
+    onStartGame: handleStartGame,
     enabled: !gameRunning, // Only enable start game key when not running. Movement keys handled by internal logic of useKeyboardControls
+  });
+
+  // Pointer (mouse/touch) controls
+  usePointerControls({
+    containerRef,
+    onPositionChange: setCatchPosition,
+    onStartGame: handleStartGame,
+    enabled: !gameRunning,
   });
 
   // Game loop
@@ -121,14 +136,17 @@ export function useGameLoop() {
         eggIdCounterRef.current
       );
 
-      // Play sounds with a slight stagger to prevent overlap/cancellation
-      result.sounds.forEach((sound, index) => {
-        if (index === 0) {
-          playSound(sound);
-        } else {
-          setTimeout(() => playSound(sound), index * 50);
-        }
-      });
+      // Play rolling sounds only when no miss — on a miss tick all eggs are
+      // immediately cleared, so their sounds would be phantoms out of sync with visuals
+      if (result.missedCount === 0) {
+        result.sounds.forEach((sound, index) => {
+          if (index === 0) {
+            playSound(sound);
+          } else {
+            setTimeout(() => playSound(sound), index * 50);
+          }
+        });
+      }
 
       // Update basic state
       setActiveEggs(result.newActiveEggs);
@@ -180,6 +198,7 @@ export function useGameLoop() {
   }, []);
 
   return {
+    containerRef,
     gameState: {
       score,
       penaltyPoints,

@@ -8,12 +8,18 @@ import catcherBottomRight from '../assets/characters/professor-catch-bottom-righ
 import catcherFailLeft from '../assets/characters/fail-bottom-left.svg';
 import catcherFailRight from '../assets/characters/fail-bottom-right.svg';
 
-const CATCHER_FRAMES: Record<CatchPosition, string> = {
-  'bottom-left': catcherBottomLeft,
-  'top-left': catcherTopLeft,
-  'top-right': catcherTopRight,
-  'bottom-right': catcherBottomRight,
-};
+// All sprites with their CSS class and visibility key
+const NORMAL_FRAMES: { key: CatchPosition; src: string; className: string }[] = [
+  { key: 'bottom-left',  src: catcherBottomLeft,  className: 'catcher catcher-bottom-left' },
+  { key: 'top-left',     src: catcherTopLeft,     className: 'catcher catcher-top-left' },
+  { key: 'top-right',    src: catcherTopRight,     className: 'catcher catcher-top-right' },
+  { key: 'bottom-right', src: catcherBottomRight,  className: 'catcher catcher-bottom-right' },
+];
+
+const FAIL_FRAMES: { key: 'left' | 'right'; src: string; className: string }[] = [
+  { key: 'left',  src: catcherFailLeft,  className: 'catcher catcher-fail-left' },
+  { key: 'right', src: catcherFailRight, className: 'catcher catcher-fail-right' },
+];
 
 interface CatcherProps {
   position: CatchPosition;
@@ -22,24 +28,29 @@ interface CatcherProps {
 
 /**
  * Catcher character that catches falling eggs.
- * Shows fail pose during miss animation.
+ * Pre-renders all sprites and toggles visibility to avoid flicker on position change.
  */
 export function Catcher({ position, failSide }: CatcherProps) {
-  const src = failSide === 'left'
-    ? catcherFailLeft
-    : failSide === 'right'
-      ? catcherFailRight
-      : CATCHER_FRAMES[position];
-
-  const className = failSide
-    ? `catcher catcher-fail-${failSide}`
-    : `catcher catcher-${position}`;
-
   return (
-    <img
-      src={src}
-      alt={failSide ? `Catcher fail ${failSide}` : `Catcher at ${position}`}
-      className={className}
-    />
+    <>
+      {NORMAL_FRAMES.map(({ key, src, className }) => (
+        <img
+          key={key}
+          src={src}
+          alt={`Catcher at ${key}`}
+          className={className}
+          style={{ visibility: !failSide && position === key ? 'visible' : 'hidden' }}
+        />
+      ))}
+      {FAIL_FRAMES.map(({ key, src, className }) => (
+        <img
+          key={`fail-${key}`}
+          src={src}
+          alt={`Catcher fail ${key}`}
+          className={className}
+          style={{ visibility: failSide === key ? 'visible' : 'hidden' }}
+        />
+      ))}
+    </>
   );
 }
