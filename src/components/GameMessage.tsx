@@ -10,8 +10,8 @@ export function GameMessage({ type, score }: GameMessageProps) {
   if (type === 'start') {
     return (
       <div className="game-message">
-        <span>Press SPACE to start</span>
-        <span className="controls-hint">Controls: Z A S X</span>
+        <span>Press SPACE or tap to start</span>
+        <span className="controls-hint">Keys: Z A S X  |  Tap quadrant to move</span>
       </div>
     );
   }

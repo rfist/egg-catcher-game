@@ -128,6 +128,8 @@ export function calculateNextGameState(
     const availableNest = getRandomAvailableNest(newActiveEggs);
     if (availableNest) {
       newActiveEggs[availableNest].push({ id: nextEggId++, frame: 0 });
+      // Play rolling sound on spawn so frame 0 is not silent
+      sounds.push(NEST_ROLLING_SOUND[availableNest]);
     }
   }
 

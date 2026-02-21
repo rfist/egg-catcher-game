@@ -19,7 +19,7 @@ import { GameMessage } from './GameMessage';
 import backgroundSvg from '../assets/background/scene.svg';
 
 export function GameScene() {
-  const { gameState } = useGameLoop();
+  const { gameState, containerRef } = useGameLoop();
   
   const {
     score,
@@ -36,7 +36,7 @@ export function GameScene() {
   const showStartMessage = !gameRunning && !isGameOver;
 
   return (
-    <div className="game-container">
+    <div className="game-container" ref={containerRef}>
       <img src={backgroundSvg} alt="Game background" className="background" />
 
       <WindowCharacter visible={windowCharacterVisible} />
